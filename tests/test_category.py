@@ -7,8 +7,22 @@ def test_category_init(
 ) -> None:
     assert sample_category.name == "Смартфоны"
     assert sample_category.description == "Современные телефоны"
-    assert len(sample_category.products) == 2
-    assert sample_category.products[0] == sample_product_1
+    expected_str = (
+        "Samsung Galaxy S23, 80000.0 руб. Остаток: 5 шт.\n"
+        "Iphone 15, 95000.0 руб. Остаток: 10 шт.\n"
+    )
+    assert sample_category.products == expected_str
+
+
+def test_category_add_product(
+    sample_category: Category, sample_product_1: Product
+) -> None:
+    assert Category.product_count == 2
+    new_prod = Product("Pixel 8", "Google", 65000.0, 4)
+    sample_category.add_product(new_prod)
+
+    assert Category.product_count == 3
+    assert "Pixel 8, 65000.0 руб. Остаток: 4 шт.\n" in sample_category.products
 
 
 def test_category_and_product_counts(

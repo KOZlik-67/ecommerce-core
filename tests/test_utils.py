@@ -25,8 +25,10 @@ def test_load_data_from_json(tmp_path: Path) -> None:
     categories = load_data_from_json(str(json_file))
     assert len(categories) == 1
     assert categories[0].name == "Телевизоры"
-    assert len(categories[0].products) == 1
-    assert categories[0].products[0].name == "LG OLED"
+    assert (
+        categories[0].products == "LG OLED, 120000.0 руб. Остаток: 2 шт.\n"
+    )
+    assert "LG OLED" in categories[0].products
 
 
 def test_load_data_non_existent_file() -> None:

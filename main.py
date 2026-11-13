@@ -17,21 +17,29 @@ if __name__ == "__main__":
         [product1, product2, product3],
     )
 
-    print(category1.name)
-    print(category1.description)
-    print(len(category1.products))
-    print(category1.category_count)
+    print(category1.products)
+    product4 = Product('55" QLED 4K', "Фоновая подсветка", 123000.0, 7)
+    category1.add_product(product4)
+    print(category1.products)
     print(category1.product_count)
 
-    product4 = Product('55" QLED 4K', "Фоновая подсветка", 123000.0, 7)
-    category2 = Category(
-        "Телевизоры",
-        "Современный телевизор для дома",
-        [product4],
+    new_product = Product.new_product(
+        {
+            "name": "Samsung Galaxy S23 Ultra",
+            "description": "256GB, Серый цвет, 200MP камера",
+            "price": 180000.0,
+            "quantity": 5,
+        }
     )
+    print(new_product.name)
+    print(new_product.description)
+    print(new_product.price)
+    print(new_product.quantity)
 
-    print(category2.name)
-    print(category2.description)
-    print(len(category2.products))
-    print(Category.category_count)
-    print(Category.product_count)
+    new_product.price = 800
+    print(new_product.price)
+
+    new_product.price = -100
+    print(new_product.price)
+    new_product.price = 0
+    print(new_product.price)
