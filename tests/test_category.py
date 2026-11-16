@@ -1,14 +1,28 @@
-from src.category import Category
+from src.category import Category, CategoryIterator
 from src.product import Product
 
 
-def test_category_init(
-    sample_category: Category, sample_product_1: Product
-) -> None:
+def test_category_init(sample_category: Category) -> None:
     assert sample_category.name == "Смартфоны"
     assert sample_category.description == "Современные телефоны"
-    assert len(sample_category.products) == 2
-    assert sample_category.products[0] == sample_product_1
+    expected_str = (
+        "Samsung Galaxy S23, 80000.0 руб. Остаток: 5 шт.\n"
+        "Iphone 15, 95000.0 руб. Остаток: 10 шт.\n"
+    )
+    assert sample_category.products == expected_str
+
+
+def test_category_str(sample_category: Category) -> None:
+    assert str(sample_category) == "Смартфоны, количество продуктов: 15 шт."
+
+
+def test_category_add_product(sample_category: Category) -> None:
+    assert Category.product_count == 2
+    new_prod = Product("Pixel 8", "Google", 65000.0, 4)
+    sample_category.add_product(new_prod)
+
+    assert Category.product_count == 3
+    assert "Pixel 8, 65000.0 руб. Остаток: 4 шт.\n" in sample_category.products
 
 
 def test_category_and_product_counts(
@@ -29,3 +43,13 @@ def test_category_and_product_counts(
     )
     assert Category.category_count == 2
     assert Category.product_count == 3
+
+
+def test_category_iterator(
+    sample_category: Category,
+    sample_product_1: Product,
+    sample_product_2: Product,
+) -> None:
+    iterator = CategoryIterator(sample_category)
+    items = list(iterator)
+    assert items == [sample_product_1, sample_product_2]
