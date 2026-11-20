@@ -1,6 +1,6 @@
 from unittest.mock import patch
 import pytest
-from src.product import LawnGrass, Product, Smartphone
+from src.product import BaseProduct, LawnGrass, PrintMixin, Product, Smartphone
 
 
 def test_product_init(sample_product_1: Product) -> None:
@@ -16,7 +16,7 @@ def test_product_str(sample_product_1: Product) -> None:
 
 
 def test_product_add(
-        sample_product_1: Product, sample_product_2: Product
+    sample_product_1: Product, sample_product_2: Product
 ) -> None:
     assert sample_product_1 + sample_product_2 == 1350000.0
 
@@ -25,7 +25,7 @@ def test_product_add(
 
 
 def test_product_price_setter(
-        sample_product_1: Product, capsys: object
+    sample_product_1: Product, capsys: object
 ) -> None:
     sample_product_1.price = 0
     captured = capsys.readouterr()  # type: ignore[attr-defined]
@@ -122,3 +122,14 @@ def test_add_different_classes_error() -> None:
 
     with pytest.raises(TypeError):
         _ = phone1 + grass
+
+
+def test_base_product_and_mixin(capsys: object) -> None:
+    assert issubclass(Product, BaseProduct)
+    assert issubclass(Product, PrintMixin)
+
+    Product("Тестовый товар", "Описание", 1000.0, 3)
+    captured = capsys.readouterr()  # type: ignore[attr-defined]
+    assert (
+        "Product('Тестовый товар', 'Описание', 1000.0, 3)" in captured.out
+    )
